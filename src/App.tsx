@@ -1,6 +1,16 @@
 import React, { useContext, useState } from "react";
-import logo from "./logo.svg";
 import { ContextApp } from "./context/Context";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  Fab,
+  List,
+  ListItem,
+  Paper,
+  ThemeProvider,
+} from "@mui/material";
 
 function App() {
   const {
@@ -14,45 +24,56 @@ function App() {
   const [inContent, setInContent] = useState("");
 
   return (
-    <div>
-      <input
-        type="text"
-        value={inContent}
-        onChange={(e) => setInContent(e.target.value)}
-      />
-      <button
-        onClick={() => {
-          onClickAddTodo(inContent);
-        }}
-      >
-        AddTodo
-      </button>
-      <ul>
-        {todos.map((todo) => (
-          <div>
-            <li
-              style={{ color: todo.isCompleted === true ? "gray" : "black" }}
-              key={todo.id}
-            >
-              {todo.content}
-            </li>
-            <button
-              onClick={() => {
-                onClickDeleteTodo(todo.id);
-              }}
-            >
-              Cancella task
-            </button>
-            <input
-              type="checkbox"
-              onClick={() => {
-                onClickCompleteTodo(todo.id);
-              }}
-            ></input>
-          </div>
-        ))}
-      </ul>
-    </div>
+    <Paper elevation={4} square={false}>
+      <Container maxWidth="sm">
+        <Box my={2} display="flex" alignItems="center" gap={2} p={2}>
+          <input
+            type="text"
+            value={inContent}
+            onChange={(e) => setInContent(e.target.value)}
+          />
+          <Fab
+            onClick={() => {
+              onClickAddTodo(inContent);
+              setInContent("");
+            }}
+            color="primary"
+            aria-label="add"
+            size="medium"
+          >
+            +
+          </Fab>{" "}
+        </Box>
+
+        <List
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        >
+          {todos.map((todo) => (
+            <Box>
+              <ListItem
+                style={{ color: todo.isCompleted === true ? "red" : "black" }}
+                key={todo.id}
+              >
+                {todo.content}
+              </ListItem>
+              <Button
+                onClick={() => {
+                  onClickDeleteTodo(todo.id);
+                }}
+                variant="contained"
+              >
+                Cancella
+              </Button>
+              <Checkbox
+                onClick={() => {
+                  onClickCompleteTodo(todo.id);
+                }}
+              ></Checkbox>
+            </Box>
+          ))}
+        </List>
+      </Container>
+    </Paper>
   );
 }
 
